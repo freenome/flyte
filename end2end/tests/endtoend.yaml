@@ -11,12 +11,12 @@ spec:
     command:
     - bash
     - -c
-    image: docker.io/lyft/flytetester:v0.1.4_flytekitv0.6.0
+    image: docker.io/lyft/flytetester:2eed7000b4a46f687883a21368507b3975b44523
     imagePullPolicy: IfNotPresent
     name: flytetester
     resources:
       requests:
-        cpu: "1"
+        cpu: "0.2"
         memory: 500Mi
   dnsPolicy: ClusterFirst
   priority: 0

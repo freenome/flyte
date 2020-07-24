@@ -260,10 +260,6 @@ data:
         cpu: 2
         memory: 2G
         storage: 20Mi
-    task_type_whitelist:
-      spark:
-        - project: flytekit
-        - project: flytetester
     domains:
       - id: development
         name: development
@@ -281,18 +277,18 @@ data:
               value: "4000Mi"
         staging:
           - projectQuotaCpu:
-              value: "1"
+              value: "2"
           - projectQuotaMemory:
-              value: "2000Mi"
+              value: "3000Mi"
         development:
           - projectQuotaCpu:
-              value: "1"
+              value: "2"
           - projectQuotaMemory:
-              value: "2000Mi"
+              value: "3000Mi"
       refresh: 5m
 kind: ConfigMap
 metadata:
-  name: flyte-admin-config-g4cdd4724d
+  name: flyte-admin-config-2kctm97m74
   namespace: flyte
 ---
 apiVersion: v1
@@ -594,7 +590,7 @@ spec:
       labels:
         app: flyteadmin
         app.kubernetes.io/name: flyteadmin
-        app.kubernetes.io/version: 0.2.6
+        app.kubernetes.io/version: 0.2.10
     spec:
       containers:
       - command:
@@ -603,7 +599,7 @@ spec:
         - --config
         - /etc/flyte/config/flyteadmin_config.yaml
         - serve
-        image: docker.io/lyft/flyteadmin:v0.2.6
+        image: docker.io/lyft/flyteadmin:v0.2.10
         imagePullPolicy: IfNotPresent
         name: flyteadmin
         ports:
@@ -647,7 +643,7 @@ spec:
         - /etc/flyte/config/flyteadmin_config.yaml
         - migrate
         - run
-        image: docker.io/lyft/flyteadmin:v0.2.6
+        image: docker.io/lyft/flyteadmin:v0.2.11
         imagePullPolicy: IfNotPresent
         name: run-migrations
         volumeMounts:
@@ -663,7 +659,7 @@ spec:
         - flytesnacks
         - flytetester
         - flyteexamples
-        image: docker.io/lyft/flyteadmin:v0.2.6
+        image: docker.io/lyft/flyteadmin:v0.2.11
         imagePullPolicy: IfNotPresent
         name: seed-projects
         volumeMounts:
@@ -676,7 +672,7 @@ spec:
         - /etc/flyte/config/flyteadmin_config.yaml
         - clusterresource
         - sync
-        image: docker.io/lyft/flyteadmin:v0.2.6
+        image: docker.io/lyft/flyteadmin:v0.2.11
         imagePullPolicy: IfNotPresent
         name: sync-cluster-resources
         volumeMounts:
@@ -692,7 +688,7 @@ spec:
       - emptyDir: {}
         name: shared-data
       - configMap:
-          name: flyte-admin-config-g4cdd4724d
+          name: flyte-admin-config-2kctm97m74
         name: config-volume
 ---
 apiVersion: apps/v1
@@ -712,13 +708,13 @@ spec:
       labels:
         app: flyteconsole
         app.kubernetes.io/name: flyteconsole
-        app.kubernetes.io/version: 0.4.0
+        app.kubernetes.io/version: 0.5.3
     spec:
       containers:
       - envFrom:
         - configMapRef:
             name: flyte-console-config
-        image: docker.io/lyft/flyteconsole:v0.4.0
+        image: docker.io/lyft/flyteconsole:v0.5.3
         name: flyteconsole
         ports:
         - containerPort: 8080
@@ -754,7 +750,7 @@ spec:
       labels:
         app: flytepropeller
         app.kubernetes.io/name: flytepropeller
-        app.kubernetes.io/version: 0.2.20
+        app.kubernetes.io/version: 0.2.64
     spec:
       containers:
       - args:
@@ -767,7 +763,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: docker.io/lyft/flytepropeller:v0.2.20
+        image: docker.io/lyft/flytepropeller:v0.2.64
         imagePullPolicy: IfNotPresent
         name: flytepropeller
         ports:
@@ -874,7 +870,7 @@ spec:
             - /etc/flyte/config/flyteadmin_config.yaml
             - clusterresource
             - sync
-            image: docker.io/lyft/flyteadmin:v0.2.6
+            image: docker.io/lyft/flyteadmin:v0.2.11
             imagePullPolicy: IfNotPresent
             name: sync-cluster-resources
             volumeMounts:
@@ -889,7 +885,7 @@ spec:
               name: clusterresource-template-m2kccc465f
             name: resource-templates
           - configMap:
-              name: flyte-admin-config-g4cdd4724d
+              name: flyte-admin-config-2kctm97m74
             name: config-volume
   schedule: '*/1 * * * *'
 ---
